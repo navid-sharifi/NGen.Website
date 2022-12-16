@@ -79,7 +79,7 @@ namespace NGen
             }
         }
 
-        public async Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> where) where T : BaseEntity
+        public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> where) where T : BaseEntity
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
