@@ -13,7 +13,7 @@ namespace NGen
 		public Database(IConfiguration configuration)
 		{
 			Configuration = configuration;
-			ConnectionString = configuration["ConnectionString"];
+			ConnectionString = Configuration.GetConnectionString("DefaultConnection");
 		}
 
 		public Database<T> Of<T>() where T : BaseEntity
