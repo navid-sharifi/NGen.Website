@@ -1,9 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using RepoDb;
-using System;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace NGen
 {
