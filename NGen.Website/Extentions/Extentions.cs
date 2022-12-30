@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System.Linq.Expressions;
+using System.Linq;
 
 namespace NGen
 {
@@ -34,9 +35,9 @@ namespace NGen
         public static string FirstCharToLower(this string @this)
         {
             if (@this.None()) return @this;
-
             @this = @this.Trim();
-            return @this.Substring(0, 1).ToLower() + @this.Substring(1, @this.Length - 1);
+
+			return @this.Substring(0, 1).ToLower() + @this.Substring(1, @this.Length - 1);
         }
 
 
@@ -180,5 +181,14 @@ namespace NGen
 
             return data;
         }
+
+        public static IEnumerable<TOut> Select<TOut , Tin>(this IEnumerable<Tin> rows, string Name)
+        {
+			var x = Expression.Parameter(typeof(Tin), "x");
+			var body = Expression.PropertyOrField(x, Name);
+			var lambda = Expression.Lambda<Func<Tin, TOut>>(body, x);
+			return rows.Select(lambda.Compile());
+		}
+
     }
 }

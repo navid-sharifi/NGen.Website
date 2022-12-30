@@ -9,6 +9,5 @@
             if (Id == Guid.Empty)
                 Id = Guid.NewGuid();
         }
-
     }
 }
