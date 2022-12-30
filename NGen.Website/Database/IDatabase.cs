@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq.Expressions;
 
@@ -8,10 +7,20 @@ namespace NGen
 	public interface IDatabase<TEntity> where TEntity : BaseEntity
 	{
 		Task<List<TEntity>> GetListAsync();
+
 		Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate);
+
 		Task InsertAsync(TEntity predicate);
+
 		Task<TEntity> FirstOrDefaultAsync();
+
 		Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+
+		TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
+
+		Task DeleteAsync(Expression<Func<TEntity, bool>> predicate);
+
+		Task UpdateAsync(TEntity row);
 	}
 
 	public class Database
@@ -24,6 +33,35 @@ namespace NGen
 		public IDatabase<TEntity> Of<TEntity>() where TEntity : BaseEntity
 		{
 			return HttpContext.RequestServices.GetService<IDatabase<TEntity>>();
+		}
+		public Task DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : BaseEntity
+		{
+			return HttpContext.RequestServices.GetService<IDatabase<TEntity>>()
+					.DeleteAsync(predicate);
+		}
+
+		public Task InsertAsync<TEntity>(TEntity row) where TEntity : BaseEntity
+		{
+			return HttpContext.RequestServices.GetService<IDatabase<TEntity>>()
+					.InsertAsync(row);
+		}
+
+		public Task UpdateAsync<TEntity>(TEntity row) where TEntity : BaseEntity
+		{
+			return HttpContext.RequestServices.GetService<IDatabase<TEntity>>()
+					.UpdateAsync(row);
+		}
+		
+		public Task<List<TEntity>> GetListAsync<TEntity>() where TEntity : BaseEntity
+		{
+			return HttpContext.RequestServices.GetService<IDatabase<TEntity>>()
+					.GetListAsync();
+		}
+
+		public Task<List<TEntity>> GetListAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : BaseEntity
+		{
+			return HttpContext.RequestServices.GetService<IDatabase<TEntity>>()
+					.GetListAsync(predicate);
 		}
 	}
 }
