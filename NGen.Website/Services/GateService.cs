@@ -10,7 +10,7 @@ namespace NGen
 
         private Database Database;
         private IHttpContextAccessor HttpContextAccessor;
-        public GateService(IDatabase database, IHttpContextAccessor httpContextAccessor)
+        public GateService(Database database, IHttpContextAccessor httpContextAccessor)
         {
             Database = database;
             this.HttpContextAccessor = httpContextAccessor;
@@ -21,7 +21,7 @@ namespace NGen
             var datatime = DateTimeOffset.Now;
             var token = datatime.ToUnixTimeMilliseconds() + Guid.NewGuid().ToString().Replace("-", "");
 
-            await Database.InsertAsync(
+            await Database.Of<UserToken>().InsertAsync(
                  new UserToken
                  {
                      Date = datatime.LocalDateTime,
@@ -41,7 +41,7 @@ namespace NGen
             var datatime = DateTimeOffset.Now;
             var token = datatime.ToUnixTimeMilliseconds() + Guid.NewGuid().ToString().Replace("-", "");
 
-            await Database.InsertAsync(
+            await Database.Of<UserToken>().InsertAsync(
                  new UserToken
                  {
                      Date = datatime.LocalDateTime,
@@ -52,10 +52,9 @@ namespace NGen
             HttpContextAccessor.HttpContext.Response.Headers.Add("NGate", token);
         }
 
-
         public async Task<bool> CanLogin(User user, string password)
         {
-            user = await Database.FirstOrDefaultAsync<User>(c => c.Id == user.Id);
+            user = await Database.Of<User>().FirstOrDefaultAsync(c => c.Id == user.Id);
             if (user is null)
                 return false;
             if (user.Password != password) return false;
@@ -73,7 +72,7 @@ namespace NGen
 
         public Task<User> GetUserByName(string userName)
         {
-            return Database.FirstOrDefaultAsync<User>(c => c.Name == userName);
+            return Database.Of<User>().FirstOrDefaultAsync(c => c.Name == userName);
         }
 
         public async Task<User?> GetUserByToken(string? token)
@@ -85,14 +84,11 @@ namespace NGen
 
             if (token.None())
                 return null;
-
-            var userToken = await Database.FirstOrDefaultAsync<UserToken>(c => c.Token == token);
-
+            var userToken = await Database.Of<UserToken>().FirstOrDefaultAsync(c => c.Token == token);
             if (userToken is null)
                 return null;
-
-            User = await Database.FirstOrDefaultAsync<User>(c => c.Id == userToken.UserId);
-
+            
+            User = await Database.Of<User>().FirstOrDefaultAsync(c => c.Id == userToken.UserId);
             return User;
 
         }

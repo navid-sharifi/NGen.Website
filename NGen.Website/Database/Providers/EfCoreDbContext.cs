@@ -5,9 +5,7 @@ namespace NGen
 {
 	public class EfCoreDbContext : DbContext
 	{
-		public EfCoreDbContext(DbContextOptions<EfCoreDbContext> options) : base(options)
-		{
-		}
+		public EfCoreDbContext(DbContextOptions<EfCoreDbContext> options) : base(options) { }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

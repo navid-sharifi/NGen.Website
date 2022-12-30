@@ -9,8 +9,10 @@ namespace NGen
 	{
 		Task<List<TEntity>> GetListAsync();
 		Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate);
+		Task InsertAsync(TEntity predicate);
+		Task<TEntity> FirstOrDefaultAsync();
+		Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 	}
-
 
 	public class Database
 	{

@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace NGen
 {
-	public class EFCoreDatabase<TEntity> where TEntity : BaseEntity
+	public class EFCoreDatabase<TEntity> : IDatabase<TEntity> where TEntity : BaseEntity
 	{
 		protected readonly EfCoreDbContext DbContext;
 		public DbSet<TEntity> Entities { get; set; }
@@ -24,5 +24,15 @@ namespace NGen
 		{
 			return TableNoTracking.Where(predicate).ToListAsync();
 		}
+
+		public async Task InsertAsync(TEntity predicate)
+		{
+			await Entities.AddAsync(predicate);
+			await DbContext.SaveChangesAsync();
+		}
+		
+		public Task<TEntity> FirstOrDefaultAsync() => TableNoTracking.FirstOrDefaultAsync();
+		public Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate) => TableNoTracking.Where(predicate).FirstOrDefaultAsync();
+
 	}
 }
