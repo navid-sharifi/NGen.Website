@@ -10,7 +10,7 @@ namespace NGen
 
         private Database Database;
         private IHttpContextAccessor HttpContextAccessor;
-        public GateService(Database database, IHttpContextAccessor httpContextAccessor)
+        public GateService(IDatabase database, IHttpContextAccessor httpContextAccessor)
         {
             Database = database;
             this.HttpContextAccessor = httpContextAccessor;
