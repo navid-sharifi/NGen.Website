@@ -21,6 +21,8 @@ namespace NGen
 		Task DeleteAsync(Expression<Func<TEntity, bool>> predicate);
 
 		Task UpdateAsync(TEntity row);
+
+		IQueryable<TEntity> Table { get;  }
 	}
 
 	public class Database
@@ -32,35 +34,35 @@ namespace NGen
 		}
 		public IDatabase<TEntity> Of<TEntity>() where TEntity : BaseEntity
 		{
-			return HttpContext.RequestServices.GetService<IDatabase<TEntity>>();
+			return HttpContext.RequestServices.GetRequiredService<IDatabase<TEntity>>();
 		}
 		public Task DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : BaseEntity
 		{
-			return HttpContext.RequestServices.GetService<IDatabase<TEntity>>()
+			return HttpContext.RequestServices.GetRequiredService<IDatabase<TEntity>>()
 					.DeleteAsync(predicate);
 		}
 
 		public Task InsertAsync<TEntity>(TEntity row) where TEntity : BaseEntity
 		{
-			return HttpContext.RequestServices.GetService<IDatabase<TEntity>>()
+			return HttpContext.RequestServices.GetRequiredService<IDatabase<TEntity>>()
 					.InsertAsync(row);
 		}
 
 		public Task UpdateAsync<TEntity>(TEntity row) where TEntity : BaseEntity
 		{
-			return HttpContext.RequestServices.GetService<IDatabase<TEntity>>()
+			return HttpContext.RequestServices.GetRequiredService<IDatabase<TEntity>>()
 					.UpdateAsync(row);
 		}
 		
 		public Task<List<TEntity>> GetListAsync<TEntity>() where TEntity : BaseEntity
 		{
-			return HttpContext.RequestServices.GetService<IDatabase<TEntity>>()
+			return HttpContext.RequestServices.GetRequiredService<IDatabase<TEntity>>()
 					.GetListAsync();
 		}
 
 		public Task<List<TEntity>> GetListAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : BaseEntity
 		{
-			return HttpContext.RequestServices.GetService<IDatabase<TEntity>>()
+			return HttpContext.RequestServices.GetRequiredService<IDatabase<TEntity>>()
 					.GetListAsync(predicate);
 		}
 	}
