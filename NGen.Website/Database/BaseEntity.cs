@@ -12,6 +12,13 @@ namespace NGen
 				return new HttpContextAccessor().HttpContext.RequestServices.GetRequiredService<Database>();
 			}
 		}
+		protected static GateService GateService
+		{
+			get
+			{
+				return new HttpContextAccessor().HttpContext.RequestServices.GetRequiredService<GateService>();
+			}
+		}
 	
 		public Guid Id { get; set; }
 
@@ -19,6 +26,11 @@ namespace NGen
 		{
 			if (Id == Guid.Empty)
 				Id = Guid.NewGuid();
+		}
+
+		public virtual Task OnSaving()
+		{
+			return Task.CompletedTask;
 		}
 	}
 }
