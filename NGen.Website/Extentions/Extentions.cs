@@ -199,5 +199,12 @@ namespace NGen
 			var zone = NodaTime.DateTimeZoneProviders.Tzdb["Asia/Tehran"];
 			return NodaTime.Instant.FromDateTimeOffset(time).InZone(UTC).WithZone(zone).ToDateTimeUnspecified();
 		}
+
+		public static IEnumerable<T> Append<T>(this IEnumerable<T> @this , IEnumerable<T> rows)
+		{
+			var list = @this.ToList();
+			list.AddRange(rows);
+			return list;
+		}
 	}
 }
