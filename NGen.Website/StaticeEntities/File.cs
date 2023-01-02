@@ -5,6 +5,12 @@ namespace NGen
 {
     public partial class File : BaseEntity
     {
+        public override Task OnSaving()
+        {
+            RandomPath = Guid.NewGuid();
+            return base.OnSaving();
+        }
+
         [BindProperty]
         public byte[] Source { get; set; }
         public string Name { get; set; }
@@ -14,6 +20,6 @@ namespace NGen
         public Guid CreatorId { get; set; }
 		public Folder? Folder { get; set; }
 		public Guid? FolderId { get; set; }
-
-	}
+        public Guid RandomPath { get; set; }
+    }
 }
