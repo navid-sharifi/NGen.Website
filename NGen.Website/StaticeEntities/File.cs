@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace NGen
 {
     public partial class File : BaseEntity
     {
-        public IFormFile Source { get; set; }
+        [BindProperty]
+        public byte[] Source { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
         public long CreateDateTime { get; set; }
